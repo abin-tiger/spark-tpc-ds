@@ -29,5 +29,4 @@ ADD https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-aws/3.2.0/hadoop-aws
 
 # Copy tpcds-kit and eks-spark-benchmark library
 COPY --from=tpc-toolkit /tmp/tpcds-kit/tools /opt/tpcds-kit/tools
-COPY jars/*jar ${SPARK_HOME}/examples/jars/
 COPY --from=sbt /tmp/eks-spark-benchmark/benchmark/target/scala-2.12/*jar ${SPARK_HOME}/examples/jars/
