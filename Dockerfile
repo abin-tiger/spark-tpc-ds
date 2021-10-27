@@ -1,4 +1,4 @@
-ARG base_img=bitnami/spark:3.1.2
+ARG base_img=public.ecr.aws/b7p5s1z2/spark:latest
 
 FROM amazonlinux:2 as tpc-toolkit
 
