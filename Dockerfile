@@ -1,4 +1,4 @@
-ARG base_img=public.ecr.aws/b7p5s1z2/spark:latest
+ARG base_img=ghcr.io/abin-tiger/spark-docker-image:main
 
 FROM amazonlinux:2 as tpc-toolkit
 
