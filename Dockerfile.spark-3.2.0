@@ -1,4 +1,4 @@
-ARG base_img=ghcr.io/abin-tiger/spark-docker-image:3.1.2
+ARG base_img=ghcr.io/abin-tiger/spark-docker-image:3.2.0
 
 FROM amazonlinux:2 as tpc-toolkit
 
@@ -9,7 +9,7 @@ RUN yum group install -y "Development Tools" && \
 
 FROM mozilla/sbt:8u292_1.5.4 as sbt
 
-ARG SPARK_VERSION=3.1.2
+ARG SPARK_VERSION=3.2.0
 
 # Build the Databricks SQL perf library
 RUN git clone https://github.com/abin-tiger/spark-sql-perf.git -b spark-${SPARK_VERSION} /tmp/spark-sql-perf && \
@@ -23,9 +23,6 @@ RUN git clone https://github.com/abin-tiger/eks-spark-benchmark.git -b spark-${S
     && cd /tmp/eks-spark-benchmark/benchmark && sbt assembly
 
 FROM ${base_img}
-
-ADD https://repo1.maven.org/maven2/com/amazonaws/aws-java-sdk-bundle/1.11.874/aws-java-sdk-bundle-1.11.874.jar ${SPARK_HOME}/jars
-ADD https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-aws/3.2.0/hadoop-aws-3.2.0.jar ${SPARK_HOME}/jars
 
 # Copy tpcds-kit and eks-spark-benchmark library
 COPY --from=tpc-toolkit /tmp/tpcds-kit/tools /opt/tpcds-kit/tools

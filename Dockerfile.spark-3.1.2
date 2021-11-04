@@ -1,0 +1,29 @@
+ARG base_img=ghcr.io/abin-tiger/spark-docker-image:3.1.2
+
+FROM amazonlinux:2 as tpc-toolkit
+
+RUN yum group install -y "Development Tools" && \
+    git clone https://github.com/databricks/tpcds-kit.git -b master /tmp/tpcds-kit && \
+    cd /tmp/tpcds-kit/tools && \
+    make OS=LINUX
+
+FROM mozilla/sbt:8u292_1.5.4 as sbt
+
+ARG SPARK_VERSION=3.1.2
+
+# Build the Databricks SQL perf library
+RUN git clone https://github.com/abin-tiger/spark-sql-perf.git -b spark-${SPARK_VERSION} /tmp/spark-sql-perf && \
+    cd /tmp/spark-sql-perf/ && \
+    sbt +package
+
+# Use the compiled Databricks SQL perf library to build eks-spark-benchmark
+RUN git clone https://github.com/abin-tiger/eks-spark-benchmark.git -b spark-${SPARK_VERSION} /tmp/eks-spark-benchmark \
+    && cd /tmp/eks-spark-benchmark/ && mkdir /tmp/eks-spark-benchmark/benchmark/libs \
+    && cp /tmp/spark-sql-perf/target/scala-2.12/*.jar /tmp/eks-spark-benchmark/benchmark/libs \
+    && cd /tmp/eks-spark-benchmark/benchmark && sbt assembly
+
+FROM ${base_img}
+
+# Copy tpcds-kit and eks-spark-benchmark library
+COPY --from=tpc-toolkit /tmp/tpcds-kit/tools /opt/tpcds-kit/tools
+COPY --from=sbt /tmp/eks-spark-benchmark/benchmark/target/scala-2.12/*jar ${SPARK_HOME}/examples/jars/
