@@ -8,7 +8,7 @@ spec:
   pythonVersion: "3"
   sparkVersion: "3.1.2"
   mode: cluster
-  image: ghcr.io/abin-tiger/spark-tpc-ds:main
+  image: ghcr.io/abin-tiger/spark-tpc-ds:3.1.2
   imagePullPolicy: Always
   mainClass: com.amazonaws.eks.tpcds.BenchmarkSQL
   mainApplicationFile: local:///opt/spark/examples/jars/eks-spark-benchmark-assembly-1.0.jar
@@ -35,6 +35,7 @@ spec:
     # IRSA configuration
     "fs.s3a.aws.credentials.provider": "com.amazonaws.auth.InstanceProfileCredentialsProvider"
     "fs.s3a.impl": "org.apache.hadoop.fs.s3a.S3AFileSystem"
+    "mapreduce.fileoutputcommitter.algorithm.version": "2"
   sparkConf:
     "spark.speculation": "false"
     "spark.network.timeout": "2400"
@@ -64,3 +65,5 @@ spec:
     memory: "57g"
     memoryOverhead: "2g"
     serviceAccount: spark-driver
+  restartPolicy:
+    type: Never

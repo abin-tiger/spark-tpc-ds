@@ -7,7 +7,7 @@ spec:
   type: Scala
   pythonVersion: "3"
   mode: cluster
-  image: ghcr.io/abin-tiger/spark-tpc-ds:main
+  image: ghcr.io/abin-tiger/spark-tpc-ds:3.1.2
   imagePullPolicy: Always
   mainClass: com.amazonaws.eks.tpcds.DataGeneration
   deps:
@@ -36,16 +36,20 @@ spec:
     # IRSA configuration
     "fs.s3a.aws.credentials.provider": "com.amazonaws.auth.InstanceProfileCredentialsProvider"
     "fs.s3a.impl": "org.apache.hadoop.fs.s3a.S3AFileSystem"
+    "mapreduce.fileoutputcommitter.algorithm.version": "2"
   sparkConf:
-    "spark.hadoop.mapreduce.outputcommitter.factory.scheme.s3a": "org.apache.hadoop.fs.s3a.commit.S3ACommitterFactory"
-    "spark.kubernetes.executor.podNamePrefix": "tpc-ds"
+    "spark.speculation": "false"
+    "spark.network.timeout": "2400"
+    # S3 Configs
     "spark.hadoop.fs.s3a.connection.timeout": "1200000"
     "spark.hadoop.fs.s3a.path.style.access": "true"
     "spark.hadoop.fs.s3a.connection.maximum": "200"
     "spark.hadoop.fs.s3a.fast.upload": "true"
     "spark.hadoop.fs.s3a.readahead.range": "256K"
     "spark.hadoop.fs.s3a.input.fadvise": "random"
+    "spark.hadoop.mapreduce.outputcommitter.factory.scheme.s3a": "org.apache.hadoop.fs.s3a.commit.S3ACommitterFactory"
     "spark.sql.execution.arrow.pyspark.enabled": "true"
+    "spark.sql.execution.arrow.pyspark.fallback.enabled": "true"
     "spark.eventLog.enabled": "true"
     "spark.eventLog.dir": "s3a://my_s3_bucket/spark-event-logs/"
   sparkVersion: "3.1.2"
@@ -70,8 +74,5 @@ spec:
       operator: Equal
       value: spark-batch
       effect: NoSchedule
-  # dynamicAllocation:
-  #   enabled: true
-  #   initialExecutors: 3
-  #   minExecutors: 1
-  #   maxExecutors: 10
+  restartPolicy:
+    type: Never
