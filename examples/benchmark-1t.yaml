@@ -36,7 +36,14 @@ spec:
     "fs.s3a.aws.credentials.provider": "com.amazonaws.auth.InstanceProfileCredentialsProvider"
     "fs.s3a.impl": "org.apache.hadoop.fs.s3a.S3AFileSystem"
   sparkConf:
+    "spark.speculation": "false"
+    "spark.network.timeout": "2400"
+    # TPCDs Specific
+    "spark.sql.broadcastTimeout": "7200"
+    "spark.sql.crossJoin.enabled": "true"
+    "spark.sql.parquet.mergeSchema": "false"
     "spark.sql.parquet.filterPushdown": "true"
+    "spark.hadoop.fs.s3a.connection.timeout": "1200000"
     "spark.hadoop.fs.s3a.impl": "org.apache.hadoop.fs.s3a.S3AFileSystem"
     "spark.kubernetes.executor.podNamePrefix": "tpc-ds"
     "spark.hadoop.fs.s3a.fast.upload": "true"
