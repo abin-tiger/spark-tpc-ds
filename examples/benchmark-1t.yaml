@@ -42,7 +42,7 @@ spec:
     "spark.hadoop.fs.s3a.fast.upload": "true"
     "spark.sql.execution.arrow.pyspark.enabled": "true"
     "spark.eventLog.enabled": "true"
-    "spark.eventLog.dir": "s3a://sbd-caspian-sandbox-datascience/shared/spark-kubernetes/batch/spark-event-logs/"
+    "spark.eventLog.dir": "s3a://my_s3_bucket/shared/spark-kubernetes/batch/spark-event-logs/"
   driver:
     cores: 7
     memory: "57g"

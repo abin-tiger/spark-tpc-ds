@@ -17,7 +17,7 @@ spec:
   mainApplicationFile: local:///opt/spark/examples/jars/eks-spark-benchmark-assembly-1.0.jar
   arguments:
   # TPC-DS data localtion
-    - "s3a://sbd-mle-explorations/TPCDS-TEST-1T"
+    - "s3a://my_s3_bucket/TPCDS-TEST-1T"
   # Path to kit in the docker image
     - "/opt/tpcds-kit/tools"
   # Data Format
@@ -47,7 +47,7 @@ spec:
     "spark.hadoop.fs.s3a.input.fadvise": "random"
     "spark.sql.execution.arrow.pyspark.enabled": "true"
     "spark.eventLog.enabled": "true"
-    "spark.eventLog.dir": "s3a://sbd-mle-explorations/spark-event-logs/"
+    "spark.eventLog.dir": "s3a://my_s3_bucket/spark-event-logs/"
   sparkVersion: "3.1.2"
   driver:
     cores: 1
