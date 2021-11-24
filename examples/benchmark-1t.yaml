@@ -33,6 +33,7 @@ spec:
     - "true"
   hadoopConf:
     # IRSA configuration
+    # "fs.s3a.aws.credentials.provider": "com.amazonaws.auth.WebIdentityTokenCredentialsProvider"
     "fs.s3a.aws.credentials.provider": "com.amazonaws.auth.InstanceProfileCredentialsProvider"
     "fs.s3a.impl": "org.apache.hadoop.fs.s3a.S3AFileSystem"
     "mapreduce.fileoutputcommitter.algorithm.version": "2"
