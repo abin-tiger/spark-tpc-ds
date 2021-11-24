@@ -52,8 +52,8 @@ spec:
     "spark.hadoop.fs.s3a.input.fadvise": "random"
     "spark.hadoop.fs.s3a.impl": "org.apache.hadoop.fs.s3a.S3AFileSystem"
     "spark.sql.execution.arrow.pyspark.enabled": "true"
-    "spark.eventLog.enabled": "true"
-    "spark.eventLog.dir": "s3a://my_s3_bucket/shared/spark-kubernetes/batch/spark-event-logs/"
+    # "spark.eventLog.enabled": "true"
+    # "spark.eventLog.dir": "s3a://my_s3_bucket/shared/spark-kubernetes/batch/spark-event-logs/"
   driver:
     cores: 7
     memory: "57g"

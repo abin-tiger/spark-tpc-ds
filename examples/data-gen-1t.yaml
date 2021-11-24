@@ -8,6 +8,7 @@ spec:
   pythonVersion: "3"
   mode: cluster
   image: ghcr.io/abin-tiger/spark-tpc-ds:3.1.2
+  sparkVersion: "3.1.2"
   imagePullPolicy: Always
   mainClass: com.amazonaws.eks.tpcds.DataGeneration
   mainApplicationFile: local:///opt/spark/examples/jars/eks-spark-benchmark-assembly-1.0.jar
@@ -19,7 +20,7 @@ spec:
   # Data Format
     - "parquet"
   # Scale factor (in GB)
-    - "1"
+    - "1000"
   # Generate data num partitions
     - "200"
   # Create the partitioned fact tables
@@ -46,9 +47,8 @@ spec:
     "spark.hadoop.mapreduce.outputcommitter.factory.scheme.s3a": "org.apache.hadoop.fs.s3a.commit.S3ACommitterFactory"
     "spark.sql.execution.arrow.pyspark.enabled": "true"
     "spark.sql.execution.arrow.pyspark.fallback.enabled": "true"
-    "spark.eventLog.enabled": "true"
-    "spark.eventLog.dir": "s3a://my_s3_bucket/spark-event-logs/"
-  sparkVersion: "3.1.2"
+    # "spark.eventLog.enabled": "true"
+    # "spark.eventLog.dir": "s3a://my_s3_bucket/spark-event-logs/"
   driver:
     cores: 1
     memory: "1g"
@@ -60,15 +60,5 @@ spec:
     memory: "57g"
     memoryOverhead: "2g"
     serviceAccount: spark-driver
-    volumeMounts:
-    - name: "spark-local-dir-1"
-      mountPath: "/local1"
-    nodeSelector:
-      node.kubernetes.io/role: spark-batch
-    tolerations:
-    - key: role
-      operator: Equal
-      value: spark-batch
-      effect: NoSchedule
   restartPolicy:
     type: Never
